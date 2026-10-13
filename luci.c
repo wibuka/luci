@@ -50,6 +50,7 @@ void renderer_draw_texture_ex(LUCI_Texture texture, LUCI_Rectangle source, LUCI_
 
 void renderer_set_default_font(LUCI_Font font);
 void renderer_init(int width, int height);
+void renderer_draw_pixel(float x, float y, LUCI_Color color);
 void renderer_draw_rectangle(float x, float y, float width, float height, LUCI_Color tint);
 void renderer_draw_rectangle_ex(float x, float y, float width, float height, float origin_x, float origin_y, float rotation, LUCI_Color tint);
 void renderer_draw_line(float x0, float y0, float x1, float y1, LUCI_Color tint);
@@ -121,6 +122,11 @@ void LUCI_end_drawing(void) {
     renderer_end();
     window_end();
 }
+
+void LUCI_draw_pixel(float x, float y, LUCI_Color color) {
+    renderer_draw_pixel(x, y, color);
+}
+
 void LUCI_draw_texture(LUCI_Texture texture, float x, float y, LUCI_Color color) { 
     renderer_draw_texture(texture, x, y, color); 
 }

@@ -289,6 +289,40 @@ void renderer_draw_texture(LUCI_Texture texture, float x, float y, LUCI_Color ti
     renderer_draw_texture_ex(texture, (LUCI_Rectangle){ 0, 0, (float)texture.width, (float)texture.height }, (LUCI_Rectangle){ 0, 0, (float)texture.width, (float)texture.height }, 0.0f, 0.0f, 0.0f, tint);
 }
 
+void renderer_draw_pixel(float x, float y, LUCI_Color tint) {
+    use_shader(activeShader);
+    use_texture(white_texture);
+    if (quad_count >= MAX_SPRITE) flush_batch();
+
+    float x0 = (x / window_w) * 2.0f - 1.0f;
+    float y0 = 1.0f - (y / window_h) * 2.0f;
+    float x1 = ((x + 1.0f) / window_w) * 2.0f - 1.0f;
+    float y1 = 1.0f - ((y + 1.0f) / window_h) * 2.0f;
+
+    float positions[4][2] = {
+        {x0, y0},
+        {x1, y0},
+        {x1, y1},
+        {x0, y1}
+    };
+
+    float uvs[4][2] = {
+        {0, 1}, {1, 1}, {1, 0}, {0, 0}
+    };
+
+    for (int i = 0; i < 4; i++) {
+        Vertex* v = &vertex_buffer[quad_count * 4 + i];
+        v->x = positions[i][0];
+        v->y = positions[i][1];
+        v->z = 0.0f;
+        v->u = uvs[i][0];
+        v->v = uvs[i][1];
+        v->color = tint;
+    }
+
+    quad_count++;
+}
+
 void renderer_draw_rectangle_ex(float x, float y, float width, float height, float origin_x, float origin_y, float rotation, LUCI_Color tint) {
     use_shader(activeShader);
     use_texture(white_texture);

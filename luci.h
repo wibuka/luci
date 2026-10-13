@@ -262,6 +262,7 @@ void LUCI_begin_drawing(void);
 void LUCI_end_drawing(void);
 void LUCI_draw_texture(LUCI_Texture texture, float x, float y, LUCI_Color color);
 
+void LUCI_draw_pixel(float x, float y, LUCI_Color color);
 void LUCI_draw_texture_ex(LUCI_Texture texture, LUCI_Rectangle source, LUCI_Rectangle dest, float origin_x, float origin_y, float rotation, LUCI_Color color);
 void LUCI_draw_rectangle(float x, float y, float width, float height, LUCI_Color color);
 void LUCI_draw_rectangle_ex(float x, float y, float width, float height, float origin_x, float origin_y, float rotation, LUCI_Color color);
