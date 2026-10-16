@@ -673,19 +673,48 @@ float renderer_get_font_scale(void) {
     return font_scale;
 }
 
-void renderer_draw_text(const char* text, int x, int y, LUCI_Color tint) {
-    use_shader(activeShader);
+static float renderer_measure_text_width(const char* text) {
+    if (text == NULL) return 0.0f;
+
+    LUCI_Font font = current_font;
+    float width = 0.0f;
+    float max_width = 0.0f;
+
+    for (const char* c = text; *c; c++) {
+        if (*c == '\n') {
+            if (width > max_width) max_width = width;
+            width = 0.0f;
+            continue;
+        }
+
+        unsigned char ch = (unsigned char)*c;
+        if (ch < 32 || ch >= 32 + font.length) continue;
+
+        LUCI_Glyph g = font.glyphs[ch - 32];
+        width += g.advance * font_scale;
+    }
+
+    if (width > max_width) max_width = width;
+
+    return max_width;
+}
+
+void renderer_draw_text(const char* text, float x, float y, LUCI_Color tint) {
+     use_shader(activeShader);
     LUCI_Font font = current_font;
     if (font.texture.id == 0 || font.glyphs == NULL || text == NULL) return;
 
-    float pen_x = (float)x;
-    float baseline = (float)y + (float)font.ascent * font_scale;
+    x = roundf(x);
+    y = roundf(y);
+
+    float pen_x = x;
+    float baseline = y + (float)font.ascent * font_scale;
 
     for (const char* c = text; *c; c++) {
         if (quad_count >= MAX_SPRITE) flush_batch();
 
         if (*c == '\n') {
-            pen_x = (float)x;
+            pen_x = x;
             baseline += (float)font.line_height * font_scale;
             continue;
         }
@@ -703,8 +732,35 @@ void renderer_draw_text(const char* text, int x, int y, LUCI_Color tint) {
         float y0 = roundf(baseline - (float)g.bearing_y * font_scale);
 
         use_texture(font.texture);
-        glyph_push(x0, y0, (float)g.w * font_scale, (float)g.h * font_scale, g, font.texture.width, font.texture.height, tint);
+        glyph_push(
+            x0, y0,
+            (float)g.w * font_scale,
+            (float)g.h * font_scale,
+            g,
+            font.texture.width,
+            font.texture.height,
+            tint
+        );
 
         pen_x += g.advance * font_scale;
     }
+}
+
+void renderer_draw_text_ex(const char* text, float x, float y, int align, LUCI_Color tint) {
+    if (text == NULL) return;
+    float width = renderer_measure_text_width(text);
+
+    switch (align) {
+        case LUCI_ALIGN_CENTER:
+            x -= width * 0.5f;
+            break;
+        case LUCI_ALIGN_RIGHT:
+            x -= width;
+            break;
+        case LUCI_ALIGN_LEFT:
+        default:
+            break;
+    }
+
+    renderer_draw_text(text, x, y, tint);
 }

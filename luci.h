@@ -70,6 +70,9 @@ typedef LUCI_Shader Shader;
 #define LUCI_COLOR_LIGHT_GRAY  ((LUCI_Color){ 200, 200, 200, 255 })
 #define LUCI_COLOR_DARK_GRAY   ((LUCI_Color){ 50, 50, 50, 255 })
 
+#define LUCI_ALIGN_LEFT   0
+#define LUCI_ALIGN_CENTER 1
+#define LUCI_ALIGN_RIGHT  2
 
 typedef enum LUCI_KeyboardKey {
     LUCI_KEY_NULL         = 0,
@@ -272,6 +275,7 @@ void LUCI_draw_circle(float center_x, float center_y, float radius, LUCI_Color c
 void LUCI_draw_ray(float origin_x, float origin_y, float dir_x, float dir_y, float length, LUCI_Color color);
 void LUCI_draw_ray_ex(float origin_x, float origin_y, float dir_x, float dir_y, float length, int thickness, LUCI_Color color);
 void LUCI_draw_text(const char* text, float x, float y, LUCI_Color color);
+void LUCI_draw_text_ex(const char* text, float x, float y, int align, LUCI_Color color);
 void LUCI_draw_triangles(const float *data, size_t size, LUCI_Color color);
 void LUCI_draw_box(float x, float y, float width, float height, LUCI_Color color);
 void LUCI_draw_box_ex(LUCI_Rectangle rect, float origin_x, float origin_y, float rotation, int thickness, LUCI_Color color);

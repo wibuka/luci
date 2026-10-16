@@ -65,7 +65,8 @@ void renderer_use_font(LUCI_Font font);
 void renderer_use_default_font(void);
 void renderer_set_font_scale(float scale);
 float renderer_get_font_scale(void);
-void renderer_draw_text(const char* text, int x, int y, LUCI_Color tint);
+void renderer_draw_text(const char* text, float x, float y, LUCI_Color tint);
+void renderer_draw_text_ex(const char* text, float x, float y, int align, LUCI_Color tint);
 void renderer_use_shader(LUCI_Shader shader);
 void renderer_shader_set_bool(const char* name, bool value);
 void renderer_shader_set_int(const char* name, int value);
@@ -126,7 +127,6 @@ void LUCI_end_drawing(void) {
 void LUCI_draw_pixel(float x, float y, LUCI_Color color) {
     renderer_draw_pixel(x, y, color);
 }
-
 void LUCI_draw_texture(LUCI_Texture texture, float x, float y, LUCI_Color color) { 
     renderer_draw_texture(texture, x, y, color); 
 }
@@ -157,18 +157,18 @@ void LUCI_draw_ray_ex(float origin_x, float origin_y, float dir_x, float dir_y, 
 void LUCI_draw_text(const char* text, float x, float y, LUCI_Color color) {
     renderer_draw_text(text, x, y, color);
 }
+void LUCI_draw_text_ex(const char* text, float x, float y, int align, LUCI_Color color){
+    renderer_draw_text_ex(text, x, y, align, color);
+}
 void LUCI_draw_triangles(const float *data, size_t size, LUCI_Color color) {
     renderer_draw_triangles(data, size, color);
 }
-
 void LUCI_draw_box(float x, float y, float width, float height, LUCI_Color color) {
     renderer_draw_box_ex((LUCI_Rectangle){ x, y, width, height }, 0.0f, 0.0f, 0.0f, 1.0f, color);
 }
-
 void LUCI_draw_box_ex(LUCI_Rectangle rect, float origin_x, float origin_y, float rotation, int thickness, LUCI_Color color) {
     renderer_draw_box_ex(rect, origin_x, origin_y, rotation, thickness, color);
 }
-
 void LUCI_draw_ring(float x, float y, float radius, int thickness, LUCI_Color color) {
     renderer_draw_ring(x, y, radius, thickness, color);
 }
