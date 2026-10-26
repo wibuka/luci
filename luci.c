@@ -80,6 +80,7 @@ void renderer_shader_set_mat4(const char* name, const float* values);
 void renderer_set_viewport(int width, int height);
 void renderer_begin(void);
 void renderer_end(void);
+void renderer_clear(LUCI_Color color);
 
 
 LUCI_Texture texture_load(const char* path);
@@ -122,6 +123,9 @@ void LUCI_begin_drawing(void) {
 void LUCI_end_drawing(void) {
     renderer_end();
     window_end();
+}
+void LUCI_clear(LUCI_Color color) {
+    renderer_clear(color);
 }
 
 void LUCI_draw_pixel(float x, float y, LUCI_Color color) {

@@ -263,6 +263,7 @@ int  LUCI_window_height(void);
 // Draw
 void LUCI_begin_drawing(void);
 void LUCI_end_drawing(void);
+void LUCI_clear(LUCI_Color color);
 void LUCI_draw_texture(LUCI_Texture texture, float x, float y, LUCI_Color color);
 
 void LUCI_draw_pixel(float x, float y, LUCI_Color color);

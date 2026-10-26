@@ -33,6 +33,8 @@ static uint current_texture_id = 0;
 static int window_w = 1024;
 static int window_h = 1024;
 
+static LUCI_Color clear_color = { 0, 0, 0, 255 };
+
 static Vertex vertex_buffer[MAX_SPRITE * 4];
 static uint index_buffer[MAX_INDEX];
 static uint quad_count = 0;
@@ -176,12 +178,20 @@ void renderer_set_viewport(int width, int height) {
 
 void renderer_begin(void) {
     glViewport(0, 0, window_w, window_h);
+    glClearColor(clear_color.r / 255.0f, clear_color.g / 255.0f, clear_color.b / 255.0f, clear_color.a / 255.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     activeShader = defaultShaderProgram;
     if (currentShader != defaultShaderProgram && defaultShaderProgram != 0) {
         glUseProgram(defaultShaderProgram);
         currentShader = defaultShaderProgram;
     }
+}
+
+void renderer_clear(LUCI_Color color) {
+    clear_color = color;
+    flush_batch();
+    glClearColor(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void renderer_set_default_font(LUCI_Font font) {
