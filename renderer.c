@@ -286,7 +286,7 @@ void renderer_draw_texture_ex(LUCI_Texture texture, LUCI_Rectangle source, LUCI_
 }
 
 void renderer_draw_texture(LUCI_Texture texture, float x, float y, LUCI_Color tint) {
-    renderer_draw_texture_ex(texture, (LUCI_Rectangle){ 0, 0, (float)texture.width, (float)texture.height }, (LUCI_Rectangle){ 0, 0, (float)texture.width, (float)texture.height }, 0.0f, 0.0f, 0.0f, tint);
+    renderer_draw_texture_ex(texture, (LUCI_Rectangle){ 0, 0, (float)texture.width, (float)texture.height }, (LUCI_Rectangle){ x, y, (float)texture.width, (float)texture.height }, 0.0f, 0.0f, 0.0f, tint);
 }
 
 void renderer_draw_pixel(float x, float y, LUCI_Color tint) {
